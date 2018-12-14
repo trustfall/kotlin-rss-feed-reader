@@ -1,7 +1,6 @@
 package com.example.trustfall.top10downloader
 
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,11 +19,9 @@ class FeedAdapter(
     private val resource: Int,
     private val applications: List<FeedEntry>
 ) : ArrayAdapter<FeedEntry>(context, resource) {
-    private val TAG = "FeedAdapter"
     private val inflater = LayoutInflater.from(context)
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
-        Log.d(TAG, "getView() called")
         val view: View
         val viewHolder: ViewHolder
 
@@ -49,7 +46,6 @@ class FeedAdapter(
     }
 
     override fun getCount(): Int {
-        Log.d(TAG, "getCount() called")
         return applications.size
     }
 }
