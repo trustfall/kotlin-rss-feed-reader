@@ -8,24 +8,42 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.TextView
 
-class FeedAdapter(context: Context,
-                  private val resource: Int,
-                  private val applications: List<FeedEntry>): ArrayAdapter<FeedEntry>(context, resource) {
+// view holder pattern
+class ViewHolder(v: View) {
+    val tvName: TextView = v.findViewById(R.id.tvName)
+    val tvArtist: TextView = v.findViewById(R.id.tvArtist)
+    val tvSummary: TextView = v.findViewById(R.id.tvSummary)
+}
+
+class FeedAdapter(
+    context: Context,
+    private val resource: Int,
+    private val applications: List<FeedEntry>
+) : ArrayAdapter<FeedEntry>(context, resource) {
     private val TAG = "FeedAdapter"
     private val inflater = LayoutInflater.from(context)
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         Log.d(TAG, "getView() called")
-        val view = inflater.inflate(resource, parent, false)
-        val tvName: TextView = view.findViewById(R.id.tvName)
-        val tvArtist: TextView = view.findViewById(R.id.tvArtist)
-        val tvSummary: TextView = view.findViewById(R.id.tvSummary)
+        val view: View
+        val viewHolder: ViewHolder
 
-        var currentApp = applications[position]
+        if (convertView == null) {
+            view = inflater.inflate(resource, parent, false)
+            // create a new view holder object and storing the views tag
+            viewHolder = ViewHolder(view)
+            view.tag = viewHolder
+        } else {
+            // if the view exists, retrieve view holder from its tag
+            view = convertView
+            viewHolder = view.tag as ViewHolder
+        }
 
-        tvName.text = currentApp.name
-        tvArtist.text = currentApp.artist
-        tvSummary.text = currentApp.summary
+        val currentApp = applications[position]
+
+        viewHolder.tvName.text = currentApp.name
+        viewHolder.tvArtist.text = currentApp.artist
+        viewHolder.tvSummary.text = currentApp.summary
 
         return view
     }
